@@ -1,9 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"net/http"
-	"strconv"
 
 	"SnapReport/internal/api"
 	"SnapReport/internal/config"
@@ -11,6 +10,8 @@ import (
 	"SnapReport/internal/geo"
 	"SnapReport/internal/service"
 	"SnapReport/internal/store"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -35,14 +36,14 @@ func main() {
 	// 4. Initialize Handler
 	handler := api.NewHandler(svc)
 
-	// 5. Setup Router
-	mux := http.NewServeMux()
-	handler.RegisterRoutes(mux)
+	// 5. Setup Gin Router
+	router := gin.Default()
+	handler.RegisterGinRoutes(router)
 
 	// 6. Start Server
-	addr := ":" + strconv.Itoa(cfg.Server.Port)
+	addr := fmt.Sprintf(":%d", cfg.Server.Port)
 	log.Printf("SnapReport backend listening on %s", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	if err := router.Run(addr); err != nil {
 		log.Fatal(err)
 	}
 }

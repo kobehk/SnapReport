@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 ddpai:
   base_url: "http://193.168.0.1"
@@ -7,4 +7,4 @@ ddpai:
   mock_mode: true # 如果无法连接设备，是否自动回退到模拟模式
 
 nominatim:
-  user_agent: "SnapReport/1.0 (+https://example.com)"
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"

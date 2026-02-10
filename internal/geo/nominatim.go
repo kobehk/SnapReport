@@ -1,6 +1,7 @@
 package geo
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -12,10 +13,33 @@ type Geocoder interface {
 
 type NominatimGeocoder struct {
 	UserAgent string
+	Client    *http.Client
 }
 
 func NewNominatimGeocoder(userAgent string) *NominatimGeocoder {
-	return &NominatimGeocoder{UserAgent: userAgent}
+	// 创建自定义的HTTP客户端，不使用代理，并配置TLS
+	tlsConfig := &tls.Config{
+		MinVersion: tls.VersionTLS12, // 要求TLS 1.2或更高
+	}
+	transport := &http.Transport{
+		Proxy:           nil, // 禁用代理
+		TLSClientConfig: tlsConfig,
+	}
+	client := &http.Client{
+		Transport: transport,
+		// 防止自动重定向到HTTP，保持HTTPS连接
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// 如果重定向到HTTP，返回错误以保持HTTPS
+			if req.URL.Scheme == "http" {
+				return http.ErrUseLastResponse
+			}
+			return nil
+		},
+	}
+	return &NominatimGeocoder{
+		UserAgent: userAgent,
+		Client:    client,
+	}
 }
 
 func (g *NominatimGeocoder) ReverseGeocode(lat, lng float64) (string, string, string, error) {
@@ -36,7 +60,7 @@ func (g *NominatimGeocoder) ReverseGeocode(lat, lng float64) (string, string, st
 		strconv.FormatFloat(lat, 'f', 6, 64) + "&lon=" + strconv.FormatFloat(lng, 'f', 6, 64)
 	req, _ := http.NewRequest(http.MethodGet, url, nil)
 	req.Header.Set("User-Agent", g.UserAgent)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := g.Client.Do(req)
 	if err != nil {
 		return "", "", "", err
 	}
