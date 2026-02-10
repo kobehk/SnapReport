@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+ddpai:
+  base_url: "http://193.168.0.1"
+  timeout_seconds: 5
+  mock_mode: true # 如果无法连接设备，是否自动回退到模拟模式
+
+nominatim:
+  user_agent: "SnapReport/1.0 (+https://example.com)"
