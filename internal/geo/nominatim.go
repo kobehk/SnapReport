@@ -9,6 +9,7 @@ import (
 
 type Geocoder interface {
 	ReverseGeocode(lat, lng float64) (city, road, category string, err error)
+	Provider() string
 }
 
 type NominatimGeocoder struct {
@@ -83,4 +84,8 @@ func (g *NominatimGeocoder) ReverseGeocode(lat, lng float64) (string, string, st
 		category = nr.Category
 	}
 	return city, road, category, nil
+}
+
+func (g *NominatimGeocoder) Provider() string {
+	return "nominatim"
 }

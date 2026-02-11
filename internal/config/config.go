@@ -16,9 +16,11 @@ type Config struct {
 		TimeoutSeconds int    `yaml:"timeout_seconds"`
 		MockMode       bool   `yaml:"mock_mode"`
 	} `yaml:"ddpai"`
-	Nominatim struct {
-		UserAgent string `yaml:"user_agent"`
-	} `yaml:"nominatim"`
+	Geocoder struct {
+		Type      string `yaml:"type"`       // "nominatim" 或 "amap"
+		UserAgent string `yaml:"user_agent"` // 仅 Nominatim 使用
+		APIKey    string `yaml:"api_key"`    // 仅 AMap 使用
+	} `yaml:"geocoder"`
 }
 
 func Load(path string) (*Config, error) {
@@ -27,7 +29,9 @@ func Load(path string) (*Config, error) {
 	cfg.Server.Port = 8080
 	cfg.DDPai.BaseURL = "http://193.168.0.1"
 	cfg.DDPai.TimeoutSeconds = 5
-	cfg.Nominatim.UserAgent = "SnapReport/1.0"
+	cfg.Geocoder.Type = "nominatim"
+	cfg.Geocoder.UserAgent = "SnapReport/1.0"
+	cfg.Geocoder.APIKey = ""
 
 	f, err := os.Open(path)
 	if err != nil {

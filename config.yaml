@@ -6,5 +6,12 @@ ddpai:
   timeout_seconds: 5
   mock_mode: true # 如果无法连接设备，是否自动回退到模拟模式
 
-nominatim:
+geocoder:
+  # 可选值: "nominatim" 或 "amap"
+  type: "amap"
+  
+  # Nominatim 专用配置
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  
+  # AMap 专用配置 (需在高德开放平台申请)
+  api_key: ""

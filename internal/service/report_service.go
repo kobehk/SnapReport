@@ -51,6 +51,7 @@ func (s *ReportService) Prepare(req PrepareRequest) (*model.Report, error) {
 
 	id := s.newID()
 	now := time.Now().UTC().Format(time.RFC3339)
+	provider := s.Geocoder.Provider()
 	report := model.Report{
 		ID:        id,
 		Timestamp: now,
@@ -59,6 +60,7 @@ func (s *ReportService) Prepare(req PrepareRequest) (*model.Report, error) {
 		City:      city,
 		RoadName:  road,
 		IsHighway: isHighway,
+		Provider:  provider,
 		VideoURL:  videoURL,
 		Status:    "prepared",
 		DeviceID:  req.DeviceID,

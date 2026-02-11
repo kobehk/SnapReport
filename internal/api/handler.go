@@ -96,7 +96,7 @@ func (h *Handler) prepare(w http.ResponseWriter, r *http.Request) {
 		VideoURL:  report.VideoURL,
 		Status:    report.Status,
 		DeviceID:  report.DeviceID,
-		Provider:  "nominatim",
+		Provider:  report.Provider,
 	})
 }
 
@@ -181,7 +181,7 @@ func (h *Handler) prepareGin(c *gin.Context) {
 		"video_url":  report.VideoURL,
 		"status":     report.Status,
 		"device_id":  report.DeviceID,
-		"provider":   "nominatim",
+		"provider":   report.Provider,
 	})
 }
 

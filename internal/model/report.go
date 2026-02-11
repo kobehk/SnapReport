@@ -8,6 +8,7 @@ type Report struct {
 	City      string   `json:"city"`
 	RoadName  string   `json:"road_name"`
 	IsHighway bool     `json:"is_highway"`
+	Provider  string   `json:"provider"`
 	VideoURL  string   `json:"video_url"`
 	Status    string   `json:"status"`
 	DeviceID  string   `json:"device_id"`
